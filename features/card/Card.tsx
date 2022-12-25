@@ -4,10 +4,11 @@ import { CardType } from "./types/CardType";
 
 type CardProps = {
   cardType: CardType;
+  selectCurrentFunc: (arg1: CardType) => void;
 };
 
 const Card = (props: CardProps) => {
-  const { cardType } = props;
+  const { cardType, selectCurrentFunc } = props;
 
   let value = "";
   switch (cardType.value) {
@@ -28,7 +29,10 @@ const Card = (props: CardProps) => {
   }
   const imgString = "/cards/" + value + "_of_" + cardType.category + ".png";
   return (
-    <Box _hover={{ border: "2px solid red" }}>
+    <Box
+      _hover={{ border: "2px solid red" }}
+      onClick={() => selectCurrentFunc(cardType)}
+    >
       <Image src={imgString} alt={imgString} width="100" height="200" />
     </Box>
   );

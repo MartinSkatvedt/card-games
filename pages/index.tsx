@@ -1,5 +1,5 @@
+import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
 
 export default function Home() {
   return (
@@ -10,8 +10,15 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <div>Card games!</div>
+      <main>
+        <Box w="100%">
+          <Heading as="h1" size="2xl" textAlign="center" my="8px">
+            Idiot!
+          </Heading>
+          <Flex justify="center" align="center" h="80vh">
+            <Button>Create new game</Button>
+          </Flex>
+        </Box>
       </main>
     </>
   );
