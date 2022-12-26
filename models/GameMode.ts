@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 const GameSchema = new mongoose.Schema(
   {
     deck: { type: [mongoose.Types.ObjectId] },
+    on_table: { type: [mongoose.Types.ObjectId] },
     player_1_hand: { type: [mongoose.Types.ObjectId] },
     player_1_hidden: { type: [mongoose.Types.ObjectId] },
     player_1_open: { type: [mongoose.Types.ObjectId] },
@@ -20,6 +21,7 @@ export const GameModel =
 
 export type GameApiType = {
   deck: string[];
+  on_table: string[];
   player_1_hand: string[];
   player_1_hidden: string[];
   player_1_open: string[];

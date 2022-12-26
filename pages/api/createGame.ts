@@ -27,7 +27,28 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
           (await CardModel.find()).map((card) => card._id)
         );
 
-        const response = await GameModel.create({ deck });
+        let player_1_hidden = [];
+        let player_1_open = [];
+        let player_2_hidden = [];
+        let player_2_open = [];
+
+        for (let i = 0; i < 3; i++) {
+          player_1_hidden.push(deck.pop());
+          player_2_hidden.push(deck.pop());
+        }
+
+        for (let j = 0; j < 3; j++) {
+          player_1_open.push(deck.pop());
+          player_2_open.push(deck.pop());
+        }
+
+        const response = await GameModel.create({
+          deck,
+          player_1_open,
+          player_1_hidden,
+          player_2_hidden,
+          player_2_open,
+        });
         responseId = response._id.toString();
       } catch (e) {
         console.log(e);

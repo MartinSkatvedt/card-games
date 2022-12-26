@@ -3,26 +3,26 @@ import dbConnect from "../../../lib/mongodb";
 import { GameModel } from "../../../models/GameMode";
 
 type Data = {
-  cardId?: string;
+  deckLen?: Number;
   error?: string;
 };
 
 const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
-  let card = "";
+  let deckLen = 0;
   switch (req.method) {
-    case "POST":
+    case "GET":
       const { gameId } = req.query;
 
       try {
         await dbConnect();
-        const response = await GameModel.findById(gameId);
-        card = response.deck.pop();
-        await GameModel.findByIdAndUpdate(gameId, response);
+        const gameData = await GameModel.findById(gameId);
+        deckLen = gameData.deck.length;
       } catch (e) {
         console.log(e);
         res.status(500).end();
+        return;
       }
-      res.status(200).json({ cardId: card });
+      res.status(200).json({ deckLen });
     default:
       res.status(405).end();
   }

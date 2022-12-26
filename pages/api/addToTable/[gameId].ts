@@ -28,12 +28,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
         let gameResponse = await GameModel.findById(gameId);
         await CardModel.findById(cardId); //Check that card exists
         const mongooseCardId = new mongoose.Types.ObjectId(cardId);
-
+        console.log(gameResponse);
         if (player == 1) {
-          gameResponse.player_1_hand.push(mongooseCardId);
+          gameResponse.player_1_hand = gameResponse.player_1_hand.filter(
+            (card: mongoose.Types.ObjectId) => card.toString != cardId
+          );
         } else if (player == 2) {
-          gameResponse.player_2_hand.push(mongooseCardId);
+          gameResponse.player_2_hand = gameResponse.player_2_hand.filter(
+            (card: mongoose.Types.ObjectId) => card.toString() != cardId
+          );
         }
+        gameResponse.on_table.push(mongooseCardId);
+
         await GameModel.findByIdAndUpdate(gameId, gameResponse);
       } catch (e) {
         console.log(e);

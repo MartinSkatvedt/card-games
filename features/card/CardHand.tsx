@@ -1,24 +1,17 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import Card from "./Card";
-import { CardType } from "./types/CardType";
 
 type CardHandProps = {
-  cards: CardType[];
+  cards: string[];
 };
 
 const CardHand = (props: CardHandProps) => {
   const { cards } = props;
-  const [currentCard, setCurrentCard] = useState<CardType>();
+  const [currentCard, setCurrentCard] = useState<string>("");
 
   const cardComponents = cards.map((card) => {
-    return (
-      <Card
-        cardType={card}
-        key={card.category + card.value}
-        selectCurrentFunc={setCurrentCard}
-      />
-    );
+    return <Card cardId={card} key={card} selectCurrentFunc={setCurrentCard} />;
   });
 
   return (

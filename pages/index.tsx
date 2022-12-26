@@ -1,7 +1,18 @@
 import { Box, Button, Flex, Heading } from "@chakra-ui/react";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import useNewGame from "../features/games/hooks/useNewGame";
 
 export default function Home() {
+  const { data, isLoading, isSuccess, mutate } = useNewGame();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isSuccess) {
+      router.push("game/" + data);
+    }
+  }, [isSuccess, data, router]);
   return (
     <>
       <Head>
@@ -16,7 +27,9 @@ export default function Home() {
             Idiot!
           </Heading>
           <Flex justify="center" align="center" h="80vh">
-            <Button>Create new game</Button>
+            <Button onClick={() => mutate()} isLoading={isLoading}>
+              Create new game
+            </Button>
           </Flex>
         </Box>
       </main>

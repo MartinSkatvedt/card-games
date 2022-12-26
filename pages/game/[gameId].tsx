@@ -4,26 +4,9 @@ import CardHand from "../../features/card/CardHand";
 import { CardType, CardCategory } from "../../features/card/types/CardType";
 import { InferGetServerSidePropsType } from "next";
 import dbConnect from "../../lib/mongodb";
-import { GameModel } from "../../models/GameMode";
-
-const testCards: CardType[] = [
-  {
-    value: 2,
-    category: CardCategory.CLUBS,
-  },
-  {
-    value: 5,
-    category: CardCategory.DIAMONDS,
-  },
-  {
-    value: 11,
-    category: CardCategory.SPADES,
-  },
-  {
-    value: 14,
-    category: CardCategory.HEARTS,
-  },
-];
+import { GameApiType, GameModel } from "../../models/GameMode";
+import Deck from "../../features/deck/Deck";
+import TableCard from "../../features/card/TableCard";
 
 type ContextType = {
   params: any;
@@ -48,7 +31,7 @@ const Game = ({
   isConnected,
   data,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  console.log(JSON.parse(data));
+  const gameData: GameApiType = JSON.parse(data);
   return (
     <>
       <Head>
@@ -58,14 +41,6 @@ const Game = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        {isConnected ? (
-          <h2 className="subtitle">You are connected to MongoDB</h2>
-        ) : (
-          <h2 className="subtitle">
-            You are NOT connected to MongoDB. Check the <code>README.md</code>{" "}
-            for instructions.
-          </h2>
-        )}
         <Grid
           border="2px solid white"
           borderRadius="10px"
@@ -77,11 +52,20 @@ const Game = ({
           p={4}
           templateRows="repeat(3, 1fr)"
         >
-          <GridItem>Opponent</GridItem>
-          <GridItem>Deck, current played cards and graveyard</GridItem>
           <GridItem>
             <Flex align="center" justify="center" w="100%" h="100%">
-              <CardHand cards={testCards} />
+              <CardHand cards={gameData.player_2_open} />
+            </Flex>
+          </GridItem>
+          <GridItem>
+            <Flex dir="row" justify="space-evenly">
+              <Deck />
+              <TableCard deck={gameData.on_table} />
+            </Flex>
+          </GridItem>
+          <GridItem>
+            <Flex align="center" justify="center" w="100%" h="100%">
+              <CardHand cards={gameData.player_1_open} />
             </Flex>
           </GridItem>
         </Grid>

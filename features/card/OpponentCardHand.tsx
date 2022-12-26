@@ -1,5 +1,4 @@
 import { Box } from "@chakra-ui/react";
-import { CardType } from "./types/CardType";
 
 type OpponentCardHandProps = {
   nCards: number;

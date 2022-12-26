@@ -1,17 +1,25 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Spinner } from "@chakra-ui/react";
 import Image from "next/image";
-import { CardType } from "./types/CardType";
+import useCard from "./hooks/useCard";
 
 type CardProps = {
-  cardType: CardType;
-  selectCurrentFunc: (arg1: CardType) => void;
+  cardId: string;
+  selectCurrentFunc?: (arg1: string) => void;
 };
 
 const Card = (props: CardProps) => {
-  const { cardType, selectCurrentFunc } = props;
+  const { cardId, selectCurrentFunc } = props;
+  const { data, isLoading } = useCard(cardId);
 
+  if (!data || isLoading) {
+    return (
+      <Box>
+        <Spinner />
+      </Box>
+    );
+  }
   let value = "";
-  switch (cardType.value) {
+  switch (data.value) {
     case 11:
       value = "jack";
       break;
@@ -25,13 +33,13 @@ const Card = (props: CardProps) => {
       value = "ace";
       break;
     default:
-      value = String(cardType.value);
+      value = String(data.value);
   }
-  const imgString = "/cards/" + value + "_of_" + cardType.category + ".png";
+  const imgString = "/cards/" + value + "_of_" + data.category + ".png";
   return (
     <Box
       _hover={{ border: "2px solid red" }}
-      onClick={() => selectCurrentFunc(cardType)}
+      onClick={() => selectCurrentFunc && selectCurrentFunc(cardId)}
     >
       <Image src={imgString} alt={imgString} width="100" height="200" />
     </Box>
