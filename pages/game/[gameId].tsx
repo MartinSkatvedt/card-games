@@ -1,9 +1,10 @@
 import { Flex, Grid, GridItem } from "@chakra-ui/react";
 import Head from "next/head";
-import Card from "../features/card/Card";
-import CardHand from "../features/card/CardHand";
-import { CardType, CardCategory } from "../features/card/types/CardType";
-import styles from "../styles/Home.module.css";
+import CardHand from "../../features/card/CardHand";
+import { CardType, CardCategory } from "../../features/card/types/CardType";
+import { InferGetServerSidePropsType } from "next";
+import dbConnect from "../../lib/mongodb";
+import { GameModel } from "../../models/GameMode";
 
 const testCards: CardType[] = [
   {
@@ -24,7 +25,30 @@ const testCards: CardType[] = [
   },
 ];
 
-const Game = () => {
+type ContextType = {
+  params: any;
+};
+export async function getServerSideProps(context: ContextType) {
+  const { gameId } = context.params;
+  try {
+    await dbConnect();
+    const response = await GameModel.findById(gameId);
+    return {
+      props: { isConnected: true, data: JSON.stringify(response) },
+    };
+  } catch (e) {
+    console.error(e);
+    return {
+      props: { isConnected: false, data: ":(" },
+    };
+  }
+}
+
+const Game = ({
+  isConnected,
+  data,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  console.log(JSON.parse(data));
   return (
     <>
       <Head>
@@ -34,6 +58,14 @@ const Game = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
+        {isConnected ? (
+          <h2 className="subtitle">You are connected to MongoDB</h2>
+        ) : (
+          <h2 className="subtitle">
+            You are NOT connected to MongoDB. Check the <code>README.md</code>{" "}
+            for instructions.
+          </h2>
+        )}
         <Grid
           border="2px solid white"
           borderRadius="10px"

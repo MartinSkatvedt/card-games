@@ -21,8 +21,6 @@ const CardHand = (props: CardHandProps) => {
     );
   });
 
-  console.log(currentCard);
-
   return (
     <Flex gap="8px" justifyContent="center" overflow="auto">
       {cardComponents}
