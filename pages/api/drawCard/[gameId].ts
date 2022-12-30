@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import dbConnect from "../../../lib/mongodb";
-import { GameModel } from "../../../models/GameMode";
+import { GameModel } from "../../../models/GameModel";
 
 type Data = {
   cardId?: string;

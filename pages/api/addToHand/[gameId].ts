@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import type { NextApiRequest, NextApiResponse } from "next";
 import dbConnect from "../../../lib/mongodb";
 import { CardModel } from "../../../models/CardModel";
-import { GameApiType, GameModel } from "../../../models/GameMode";
+import { GameApiType, GameModel } from "../../../models/GameModel";
 
 type Data = {
   error?: string;

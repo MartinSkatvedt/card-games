@@ -1,12 +1,12 @@
 import { Flex, Grid, GridItem } from "@chakra-ui/react";
 import Head from "next/head";
 import CardHand from "../../features/card/CardHand";
-import { CardType, CardCategory } from "../../features/card/types/CardType";
 import { InferGetServerSidePropsType } from "next";
 import dbConnect from "../../lib/mongodb";
-import { GameApiType, GameModel } from "../../models/GameMode";
+import { GameApiType, GameModel } from "../../models/GameModel";
 import Deck from "../../features/deck/Deck";
 import TableCard from "../../features/card/TableCard";
+import TableCards from "../../features/tableCards/components/TableCards";
 
 type ContextType = {
   params: any;
@@ -53,8 +53,15 @@ const Game = ({
           templateRows="repeat(3, 1fr)"
         >
           <GridItem>
-            <Flex align="center" justify="center" w="100%" h="100%">
-              <CardHand cards={gameData.player_2_open} />
+            <Flex
+              align="center"
+              justify="space-evenly"
+              w="100%"
+              h="100%"
+              flexDir="row"
+            >
+              <CardHand cards={gameData.player_2_hand} />
+              <TableCards openCards={gameData.player_2_open} />
             </Flex>
           </GridItem>
           <GridItem>
@@ -64,8 +71,15 @@ const Game = ({
             </Flex>
           </GridItem>
           <GridItem>
-            <Flex align="center" justify="center" w="100%" h="100%">
-              <CardHand cards={gameData.player_1_open} />
+            <Flex
+              align="center"
+              justify="space-evenly"
+              w="100%"
+              h="100%"
+              flexDir="row"
+            >
+              <CardHand cards={gameData.player_1_hand} />
+              <TableCards openCards={gameData.player_1_open} />
             </Flex>
           </GridItem>
         </Grid>

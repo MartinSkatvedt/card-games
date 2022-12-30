@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import dbConnect from "../../lib/mongodb";
 import { CardModel } from "../../models/CardModel";
-import { GameModel } from "../../models/GameMode";
+import { GameModel } from "../../models/GameModel";
 
 type Data = {
   gameId: string;
@@ -27,6 +27,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
           (await CardModel.find()).map((card) => card._id)
         );
 
+        let player_1_hand = [];
+        let player_2_hand = [];
         let player_1_hidden = [];
         let player_1_open = [];
         let player_2_hidden = [];
@@ -42,8 +44,15 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
           player_2_open.push(deck.pop());
         }
 
+        for (let k = 0; k < 3; k++) {
+          player_1_hand.push(deck.pop());
+          player_2_hand.push(deck.pop());
+        }
+
         const response = await GameModel.create({
           deck,
+          player_1_hand,
+          player_2_hand,
           player_1_open,
           player_1_hidden,
           player_2_hidden,
